@@ -1,0 +1,392 @@
+
+int main(){
+vector <int> A = {2, 9, 15, 29, 36, 47, 88, 107, 206};
+BST Tree;
+Tree.BuildBalanced(A);
+}
+
+//BST.cpp 
+
+---------------------------------------
+//Building a balanced tree from a sorted vector
+public:
+	BuildBalanced(A, 0, A.size()-1);
+private:
+	BuildBalanced( vector<int> vec, int L, int R){
+	
+	//left index and right index passes each other
+	if (L < R)
+		return;
+	
+	if (L == R)
+		insert(vec[L]); //insert into tree
+		
+	else{
+		int mid = (L+R)/2;
+		insert(vec[mid]); //insert into tree
+		BuildBalanced(vec, L, mid-1); // build the left subtree
+		BuildBalanced(vec, mid +1, R); // build the right subtree
+	}
+}
+---------------------------------------
+
+// Day, Stout, Warren Algorithm
+
+---------------------------------------
+// right rotation for DSW
+void RightRotateDSW ( Node * r){
+	Node * temp = r->left;
+	int tempData = r->value;
+	
+	//change the value in root
+	r->value = temp->value;
+	temp->value = tempData;
+	
+	//rotate the root
+	r->left = temp ->left;
+	
+	//update the temp node
+	temp->left = temp->right;
+	temp ->right = r->right;
+	
+	r->right = temp;
+}
+---------------------------------------
+---------------------------------------
+// left rotation algorithm for DSW
+void LeftRotateDSW (Node * r){
+	Node * temp = r->right;
+	int tempData = r->value;
+	
+	//change value in root with the value in temp
+	r->value = temp->value;
+	temp->value = tempData;
+	
+	//rotate the root
+	r->right = temp->right;
+	
+	//update the temp node
+	temp ->right = temp->left;
+	temp ->left = r->left;
+	
+	r->left = temp;
+}
+---------------------------------------
+---------------------------------------
+//starting from the root, perform right rotate for every node that has a left child
+void BackBoneDSW (Node * r){
+
+	Node * currentNode = r;
+	
+	//start from root, check if each node has left child
+	while (currentNode != nullptr){
+		while (currentNode->left != nullptr){ 
+			//if there is a left child, do a right rotate
+			RightRotateDSW(currentNode);
+		}
+		currentNode = currentNode ->right;
+	}		
+}
+---------------------------------------
+---------------------------------------
+// perform a series of left rotate to balance out the backbone
+void BalanceDSW (int n){
+	Node * current = tree->r;
+	int completeRows = log2 (n);
+	int bottomNodes = n - (2^completeRows - 1);
+
+	//Initial rotation for the bottommost level
+	for (int i = 0; i < bottomNodes; i++){ //for the number of nodes we expect on the bottom level
+		//do a special rotate for root
+		if ( i == 0) {
+			RotateLeft(current);
+			current = tree ->r;
+			}
+		else {
+			RotateLeft (current->right);
+			current = current ->right;
+		}
+	}
+	
+	// Now, left rotating ALL odd nodes on the backbone
+	int times = n;
+	while (times > 1){
+		time = time /2;
+		
+		//do a left rotate on the root
+		RotateLeft(tree->r);
+		Node * current2 = tree->r;
+		
+		//do a left rotate on the rest of the odd nodes
+		for (int i = 0; i < times-1; i++){
+			RotateLeft (current2->right);
+			current2 = current2->right;
+		}
+	}
+}
+---------------------------------------
+
+// AVL Algorithm
+
+---------------------------------------
+---------------------------------------
+//AVL simple or single right rotation
+void AVLSimpleRightRotation (Node * & pivot){ //need & because root is being changed
+	Node * rotator = pivot ->left;
+	Node * temp2 = rotator ->right;
+	
+	pivot ->left = temp2;
+	rotator ->right = pivot;
+	
+	//update root
+	pivot = rotator;
+}
+---------------------------------------
+---------------------------------------
+// AVL single left rotation
+void AVLSimpleLeftRotation (Node *& pivot){
+	Node * rotator = pivot ->right;
+	Node * temp2 = rotatot ->left;
+	
+	pivot ->right = temp2;
+	rotator ->left = pivot;
+	
+	//update root
+	pivot = rotator;
+}
+---------------------------------------
+---------------------------------------
+//AVL left - right rotation
+void AVLLeftRightRotate (Node *& pivot){
+	Node * rotator = pivot->left;
+	Node *t1 = rotator ->right;
+	Npde * t2 = t1->left;
+	
+	//do a left rotation 
+	rotator ->right = t2;
+	t1->left = rotator;
+	pivot ->left = t1;
+	
+	//do a right rotation
+	t1 ->right = pivot;
+	
+	//update root
+	pivot = t1;
+}
+---------------------------------------
+---------------------------------------
+
+// AVL Right-left rotation
+void AVLRightLeftRotate (Node *& pivot){
+	Node * rotator = pivot ->right;
+	Node *t1 = rotator ->left;
+	Node *t2 = t1->right;
+	
+	//do a right rotation 
+	rotator ->left = t2;
+	t1->right = rotator;
+	pivot->right = t1;
+	
+	//do a left rotation
+	t1->left = pivot;
+	
+	//update root
+	pivot = t1;
+}
+---------------------------------------
+---------------------------------------
+
+// Heap operations
+
+---------------------------------------
+// insert an element into heap
+
+void HeapInsert (vector<int>A, int value){
+	
+	//first insert value into the end of the array
+	int i = A.size();
+	A.size() ++;
+	A[i+1] = value;
+	
+	//compare value with its parents and swap up if needed
+	while (i != 1 && A[i/2] < A[i]{ 
+		//if the new node is greater than its parent, swap -> for MAX HEAP
+		swap (A[i],A[i/2]);
+		i = i/2;
+	}
+}
+
+---------------------------------------
+---------------------------------------
+//Extract Max value in heap
+int HeapExtractMax (vector <int> A){
+	
+	if (heap_size <= 0)
+		return 0;
+	
+	if (heap_size == 1){
+		heap_size --;
+		return A[1];
+	}
+	
+	//remove root
+	//move last item to root
+	int root = A[1];
+	A[1] = A[heap_size];
+	heap_size --;
+	
+	//heapify
+	//swap down with larger child
+	MaxHeapify(1);
+	return root;
+}	
+---------------------------------------
+---------------------------------------
+// Heapify in Max Heap
+void MaxHeapify(A, i){
+	int L = i*2; //index of left child
+	int R = i*2 +1; //index of right child
+	int largest = i;
+	if ( L <= A.size() && A[L] > A[i])
+		largest = L;
+	
+	if (R <= A.size() && A[R] > A[largest]
+		largest = R;
+
+	if (largest != i){
+		swap (A[i], A[largest]); //swap node with its larger child
+		MaxHeapify (A,largest); //recursively heapify until i is the index of the largest node -> correct order
+	}
+}
+---------------------------------------
+---------------------------------------
+//Extract Min value from heap
+int HeapExtractMin (vector <int> A){
+
+	if (heap_size <= 0)
+		return 0;
+	
+	if (heap_size == 1){
+		heap_size --;
+		return A[1];
+	}
+	
+	//remove root
+	//move last item to root
+	
+	int root = A[1];
+	A[1] = A[heap_size];
+	heap_size --;
+	
+	//heapify - swap down with its smaller child until correct order
+	MinHeapify();
+	return root;
+}
+---------------------------------------
+---------------------------------------
+//Heapify in Min Heap
+void MinHeapify (A, i){
+
+	int L = i*2; //index of left child
+	int R = i*2 +1; // index of right child
+	int smallest = i;
+	
+	if ( L <= A.size() && A[L] < A[i])
+		smallest = L;
+		
+	if ( R <= A.size() && A[R] < A[smallest])
+		smallest = R;
+	
+	if (smallest != i){
+		swap (A[i], A[smallest]); // swap node with its smaller child
+		MinHeapify(A, smallest);
+	}
+}
+---------------------------------------
+---------------------------------------
+// Build heap from an unsorted array
+ void BuildHeap (A){
+ 
+	int index = A.size() /2;
+	while (index >= 1){
+		Heapify(index);
+		index --;
+	}
+}
+---------------------------------------
+---------------------------------------
+// Use heap to sort an array
+void HeapSort (vector <int> A){
+
+	BuildHeap (A); // build heap from an array
+	while (!heapA.empty()){
+		m = heapA.extractMin();
+		cout << m << " ";
+	}
+}
+
+---------------------------------------
+---------------------------------------
+// Disjoints Sets
+
+---------------------------------------
+---------------------------------------
+// create tree containing x with inital rank of 0
+void MakeSet(vector <int> parent, int x){
+	//initally, all elements are single-element subsets
+	parent[x] = x;
+	//inital rank for each node is 0
+	rank[x] = 0;
+}
+
+---------------------------------------
+---------------------------------------
+//return the representative of the set containing x 
+void FindSet (int x){
+	//find the root of set containing x
+	//then make root as parent of x directly (path compression)
+	
+	if (x != parent[x]){
+		parent[x] = FindSet(parent[x]);
+		
+	return parent[x]; //return the root/parent of x
+}
+
+---------------------------------------
+---------------------------------------
+// link two sets using union by rank and path compression
+void Link (int x, int y){
+	int xroot = FindSet(x);
+	int yroot = FindSet(y);
+	
+	//attach the tree with smaller rank under the root of higher rank tree
+	if(rank[xroot] > rank[yroot])
+		parent[yroot] = xroot;
+		
+	else if (rank[xroot] < rank[yroot])
+		parent[xroot] = yroot;
+		
+	else { //if rank is equal, just attach one tree to the other, update rank
+		parent[xroot] = yroot;
+		rank[yroot]++;
+	}
+}
+---------------------------------------
+---------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+

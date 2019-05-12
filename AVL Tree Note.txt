@@ -1,0 +1,16 @@
+lg = base 2
+ln = base e
+log = base 10
+
+All balanced tree are O(log n) as long as they kept balancing
+
+AVL Binary Search Tree complexity O(log n)
+Normal Binary Search Tree complexity O(n)
+
+Understand Single Rotation Left
+
+AVL do a few more rotation than RB Trees (insert and delete) -> 
+
+AVL are better balanced than RB Tree
+1. uses AVL when you need to search in a lot of data
+2. used RB when you need to insert and delete lots of data

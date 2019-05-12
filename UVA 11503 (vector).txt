@@ -1,0 +1,101 @@
+#include<iostream>
+#include<string>
+#include<algorithm>
+#include<map>
+#include<vector>
+using namespace std;
+
+class DisjointSet{
+
+	vector<int> parent;
+	vector<int> rank;
+	vector<int> setSize;
+public:
+DisjointSet(int num){
+	parent.assign(num, 0);
+	rank.assign(num, 0);
+
+	//Creates a single-set containing
+	for (int i = 0; i < num; i++) {
+		parent[i] = i;
+		rank[i] = 0;
+	}
+	setSize.assign(num, 1);
+}
+
+int FindSet(int x){	
+	if (x != parent[x] )
+		parent[x] = FindSet(parent[x]);
+	return parent[x];
+}
+
+void Link(int x, int y){
+	int xroot = FindSet(x);
+	int yroot = FindSet(y);
+
+	if (xroot == yroot)
+		return;
+
+	if (rank[xroot] < rank[yroot]) {
+		parent[xroot] = yroot;
+		setSize[yroot] += setSize[xroot];
+	}
+	else if (rank[xroot] > rank[yroot]) {
+		parent[yroot] = xroot;
+		setSize[xroot] += setSize[yroot];
+	}
+
+	else{
+		parent[yroot] = xroot;
+		rank[xroot] ++;
+		setSize[xroot] += setSize[yroot];
+	}
+}
+
+int sizeOfSet(int i){
+	return setSize[FindSet(i)];}
+
+bool sameSet(int x, int y){
+	return FindSet(x) == FindSet(y);}
+
+};
+
+int main() {
+
+	int cases, F;
+	char name1[20], name2[20];
+	
+	cin >> cases;
+	for (int i = 0; i < cases; i++) {
+		cin >> F;
+		DisjointSet SetNetwork(F * 2);
+		int indexA, indexB;
+		int index = 0;
+		int ans = 0;
+		
+		vector<string> names(F*2);
+		for (int i = 0; i < F; i++) {
+			//read in names of 2 people who just become friends
+			cin >> name1 >> name2;
+
+			if (find(names.begin(), names.end(), name1) == names.end()) {
+				names[index] = name1;
+				index++;
+			}
+			if (find(names.begin(), names.end(), name2) == names.end()) {
+				names[index] = name2;
+				index++;
+			}
+
+			indexA = distance(names.begin(), find(names.begin(), names.end(), name1));
+			indexB = distance(names.begin(), find(names.begin(), names.end(), name2));
+
+			SetNetwork.Link(indexA, indexB);
+
+			ans = SetNetwork.sizeOfSet(indexA);
+			cout << ans << endl;
+		}
+		names.clear();
+	}
+	return 0;
+}

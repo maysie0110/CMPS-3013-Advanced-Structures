@@ -1,0 +1,3 @@
+﻿  BST.cpp
+c:\users\may trinh\desktop\practicebst\practicebst\bst.cpp(169): warning C4715: 'BST::MaxValue': not all control paths return a value
+  PracticeBST.vcxproj -> C:\Users\May Trinh\Desktop\PracticeBST\Debug\PracticeBST.exe

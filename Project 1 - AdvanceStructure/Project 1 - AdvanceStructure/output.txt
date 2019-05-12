@@ -1,0 +1,9 @@
+Minimum sum of distance is 2
+Minimum sum of distance is 4
+Minimum sum of distance is 20
+Minimum sum of distance is 15
+Minimum sum of distance is 1998
+Minimum sum of distance is 6
+Minimum sum of distance is 163
+Minimum sum of distance is 3
+Minimum sum of distance is 347

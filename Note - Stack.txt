@@ -1,0 +1,28 @@
+top() returns reference of variable at the top of the stack
+
+int z = 100;
+push (z);
+
+
+push(int x); //copy z into x
+push(int &x); //do not copy z into x
+
+swap (x,y) ;// swap x and y, work for all type
+
+s.swap(p); // s is *this (the object swap applied to)
+
+
+//faster
+cin>>ct;
+vector<int> v(ct);
+for (int i = 0; i< ct; i++)
+	cin >> v[i];
+
+
+int x;
+cin >> ct;
+vector <int> v;
+for (int i = 0; i<ct; i++){
+	cin >> x;
+	v.push_back(x);
+}

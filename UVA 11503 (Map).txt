@@ -1,0 +1,95 @@
+#include<iostream>
+#include<string>
+#include<algorithm>
+#include<map>
+#include<vector>
+using namespace std;
+
+class DisjointSet{
+
+	vector<int> parent;
+	vector<int> rank;
+	vector<int> setSize;
+public:
+DisjointSet(int num){
+	parent.assign(num, 0);
+	rank.assign(num, 0);
+
+	//Creates a single-set containing
+	for (int i = 0; i < num; i++) {
+		parent[i] = i;
+		rank[i] = 0;
+	}
+	setSize.assign(num, 1);
+}
+
+int FindSet(int x){	
+	if (x != parent[x] )
+		parent[x] = FindSet(parent[x]);
+	return parent[x];
+}
+
+void Link(int x, int y){
+	int xroot = FindSet(x);
+	int yroot = FindSet(y);
+
+	if (xroot == yroot)
+		return;
+
+	if (rank[xroot] < rank[yroot]) {
+		parent[xroot] = yroot;
+		setSize[yroot] += setSize[xroot];
+	}
+	else if (rank[xroot] > rank[yroot]) {
+		parent[yroot] = xroot;
+		setSize[xroot] += setSize[yroot];
+	}
+
+	else{
+		parent[yroot] = xroot;
+		rank[xroot] ++;
+		setSize[xroot] += setSize[yroot];
+	}
+}
+
+int sizeOfSet(int i){
+	return setSize[FindSet(i)];}
+
+bool sameSet(int x, int y){
+	return FindSet(x) == FindSet(y);}
+
+};
+
+int main() {
+
+	int cases, F;
+	char name1[20], name2[20];
+	map<string, int> nameMap;
+
+	cin >> cases;
+	for (int i = 0; i < cases; i++) {
+		cin >> F;
+		DisjointSet SetNetwork(F * 2);
+		int index = 0;
+		int ans = 0;
+		nameMap.clear();
+
+		for (int i = 0; i < F; i++) {
+			cin >> name1 >> name2;
+
+			if (nameMap.find(name1) == nameMap.end()) {
+				nameMap[name1] = index;
+				index++;
+			}
+			if (nameMap.find(name2) == nameMap.end()) {
+				nameMap[name2] = index;
+				index++;
+			}
+			SetNetwork.Link(nameMap[name1], nameMap[name2]);
+
+			ans = SetNetwork.sizeOfSet(nameMap[name1]);
+			cout << ans << endl;
+		}
+	}
+	return 0;
+}
