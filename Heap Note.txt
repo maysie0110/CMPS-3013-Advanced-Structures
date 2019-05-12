@@ -1,2 +1,0 @@
-Heap
-- a priority queue data structure
